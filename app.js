@@ -14,19 +14,19 @@ app.get( '/', function( req, res ) {
     res.render( 'landing' );
 } );
 
-//INDEX - show all campgrounds
+// INDEX - show all campgrounds
 app.get( '/campgrounds', function( req, res ) {
     // Get all campgrounds from DB
     Campground.find( {}, function( err, allCampgrounds ) {
        if( err ) {
             console.log( err );
        } else {
-            res.render( 'index', { campgrounds: allCampgrounds } );
+            res.render( 'campgrounds/index', { campgrounds: allCampgrounds } );
        }
     } );
 } );
 
-//CREATE - add new campground to DB
+// CREATE - add new campground to DB
 app.post( '/campgrounds', function( req, res ){
     // get data from form and add to campgrounds array
     var name = req.body.name;
@@ -44,9 +44,9 @@ app.post( '/campgrounds', function( req, res ){
     } );
 } );
 
-//NEW - show form to create new campground
+// NEW - show form to create new campground
 app.get( '/campgrounds/new', function( req, res ) {
-   res.render( 'new.ejs' ); 
+   res.render( 'campgrounds/new' ); 
 } );
 
 // SHOW - shows more info about one campground
@@ -58,11 +58,27 @@ app.get( '/campgrounds/:id', function( req, res ) {
         } else {
             console.log( foundCampground )
             //render show template with that campground
-            res.render( 'show', { campground: foundCampground } );
+            res.render( 'campgrounds/show', { campground: foundCampground } );
         }
     } );
-} )
+} );
 
+// NEW COMMENTS
+app.get( '/campgrounds/:id/comments/:new', function( req, res ) {
+    Campground.findById( req.params.id, function( err, foundCampground ) { 
+        console.log( foundCampground );
+        if ( err ) {
+            console.log( err );
+        } else {
+            res.render( 'comments/new', { campground: foundCampground } );
+        }
+    } ); 
+    
+} );
+
+app.post( '/campgrounds/:id/comments', function( req, res ) { 
+    
+} );
 app.listen( 3000, function(){
    console.log( 'The YelpCamp Server Has Started!' );
 } );

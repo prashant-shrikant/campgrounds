@@ -33,7 +33,7 @@ function seedDB() {
                 if( err ) {
                     console.log( err );
                 } else {
-                    console.log( "Added a campground" + campground._id );
+                    console.log( "Added a campground: " + campground._id );
                     //create a comment
                     Comment.create(
                         {
@@ -45,7 +45,7 @@ function seedDB() {
                             } else {
                                 campground.comments.push( comment );
                                 campground.save();
-                                console.log( "Created new comment" + comment._id);
+                                console.log( "Created new comment: " + comment._id);
                             }
                         } );
                 }
