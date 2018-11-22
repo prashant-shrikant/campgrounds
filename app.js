@@ -1,16 +1,30 @@
-var express     = require( 'express' ),
-    app         = express(),
-    bodyParser  = require( 'body-parser' ),
-    mongoose    = require( 'mongoose' ),
-    Campground  = require( './models/campground' ),
-    Comment     = require( './models/comment' ),
-    seedDB      = require( './seeds' )
+var express         = require( 'express' ),
+    app             = express(),
+    bodyParser      = require( 'body-parser' ),
+    mongoose        = require( 'mongoose' ),
+    Campground      = require( './models/campground' ),
+    Comment         = require( './models/comment' ),
+    seedDB          = require( './seeds' )
+    passport        = require( 'passport' );
+    LocalStrategy   = require( 'passport-local' );
+    User            = require( './models/user' );
     
 mongoose.connect( 'mongodb://localhost/yelp_camp_v3' );
 app.use( bodyParser.urlencoded( { extended: true } ) );
 app.set( 'view engine', 'ejs' );
 app.use( express.static( __dirname + '/public' ) );
 seedDB();
+
+app.use( require( 'express-session' ) ( { 
+    secret: "In the rays of the sun, I'm longing for the darkness",
+    resave: false,
+    saveUninitialized: false
+} ) );
+app.use( passport.initialize() );
+app.use( passport.session() );
+passport.use( new LocalStrategy( User.authenticate() ) );
+passport.serializeUser( User.serializeUser() );
+passport.deserializeUser( User.deserializeUser() );
 
 app.get( '/', function( req, res ) {
     res.render( 'landing' );
@@ -97,6 +111,37 @@ app.post( '/campgrounds/:id/comments', function( req, res ) {
         }
     } );
 } );
+
+app.get( '/register', function( req, res ) { 
+    res.render( 'register' );
+} );
+
+app.post( '/register', function( req, res ) {
+    console.log( req.body );
+    newUser = new User( { username: req.body.username} );
+    newPassword = req.body.password;
+    User.register( newUser, newPassword, function( err, user ) { 
+        if ( err ) {
+            console.log( err );
+            return res.render( 'register' );
+        } 
+        passport.authenticate( 'local' )(req, res, function() { 
+            res.redirect( '/campgrounds' );
+        } );
+    } );
+} );
+
+app.get( '/login', function( req, res ) {
+    res.render( 'login' );
+} );
+
+app.post( '/login', passport.authenticate( 'local', 
+    {
+        successRedirect: '/campgrounds',
+        failureRedirect: '/login'
+    } ), function( req, res ) { 
+    } 
+);
 
 app.listen( 3000, function(){
    console.log( 'The YelpCamp Server Has Started!' );
