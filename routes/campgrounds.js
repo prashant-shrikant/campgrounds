@@ -100,7 +100,7 @@ function isLoggedIn( req, res, next ) {
 }
 
 function checkCampgroundOwnership( req, res, next ) {
-    if ( req.isAuthenticated ) {
+    if ( req.isAuthenticated() ) {
         Campground.findById( req.params.id, function( err, foundCampground ) {
             if ( err ) {
                 res.redirect( 'back' );
@@ -112,6 +112,8 @@ function checkCampgroundOwnership( req, res, next ) {
                 }
             }
         } );
+    } else {
+        res.redirect( 'back' )
     }
 }
 
