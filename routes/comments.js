@@ -27,7 +27,6 @@ router.post( '/', isLoggedIn, function( req, res ) {
                 if ( err ) {
                     console.log( err );
                 } else {
-                    console.log( "What ra ra re: " + req.user._id + "..........." + req.user.username );
                     comment.author.id = req.user._id;
                     comment.author.username = req.user.username;
                     comment.save();

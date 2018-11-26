@@ -17,6 +17,8 @@
                     <h4 class="pull-right">$9.00/night</h4>
                     <h4><a href=""><%=campground.name%></a></h4>
                     <p><%= campground.description %></p>
+                    <em><p>Post submitted by: <%= campground.author.username %></p></em>  
+                    <a class="btn btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit</a>  
                 </div>
             </div>
             <div class="well">
@@ -39,13 +41,5 @@
         </div>
     </div>
 </div>
-
-
-
-
-<p>
-   
-</p>
-
 
 <% include ../partials/footer %>
