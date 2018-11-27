@@ -16,7 +16,7 @@ var commentRoutes       = require( './routes/comments' ),
     campgroundRoutes    = require( './routes/campgrounds' ),
     indexRoutes         = require( './routes/index' );
 
-    port = process.env.POST || 8080;
+    port = process.env.PORT || 8080;
 
     
 // mongoose.connect( 'mongodb://localhost/yelp_camp_v3' );
