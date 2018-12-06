@@ -29,9 +29,6 @@
                 </div>
             </div>
             <div class="well">
-                <div class="text-right">
-                    <a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">Add a new comment</a>
-                </div>
                 <hr>
                 <% campground.comments.forEach( function( comment ) { %>
                     <div class="row">
@@ -50,6 +47,22 @@
                         </div>
                     </div>
                 <% } ); %>
+
+                <div class="text-right">
+                    <div class="row">
+                        <h3 style="text-align: center">Create a New Comment on <%= campground.name %></h3>
+                        <div style="width: 80%; margin: 25px auto;">
+                            <form action="/campgrounds/<%= campground._id %>/comments" method="POST">
+                                <div class="form-group">
+                                    <textarea class="form-control" type="text" name="comment[text]" placeholder="text"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-lg btn-primary btn-block">Submit!</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
